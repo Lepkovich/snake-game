@@ -1,4 +1,12 @@
+import {Snake} from "./snake.js";
+
 export class Game {
+    // для удобства, чтобы не искать в конструкторе наши глобальные поля, вынесем их сюда
+    snake = null;
+    context = null;
+    positionsCount = null;
+    positionsSize = null;
+
     constructor(context, settings) {
         //приняли из App.js
         this.context = context; //контекст
@@ -9,8 +17,18 @@ export class Game {
             this.startGame();
         }
     }
+
     startGame() {
+        this.snake = new Snake(this.context, this.positionsCount, this.positionsSize);
+
+        setInterval(this.gameProcess.bind(this), 100); //будем запускать gameProcess каждую секунду
+    }
+
+    gameProcess() {
+        //очищаем поле от координат 0,0 на ширину и высоту поля
+        this.context.clearRect(0, 0, this.positionsCount * this.positionsSize, this.positionsCount * this.positionsSize);
         this.showGrid();
+        this.snake.showSnake();
     }
 
     showGrid() {
