@@ -1,10 +1,10 @@
 export class Snake {
 
+    // для удобства, чтобы не искать в конструкторе наши глобальные поля, вынесем их сюда
     currentDirection = 'right';
     snake = [
         {x: 10, y: 20}
     ]
-    // для удобства, чтобы не искать в конструкторе наши глобальные поля, вынесем их сюда
     context = null;
     positionsCount = null;
     positionsSize = null;
@@ -22,19 +22,23 @@ export class Snake {
     addKeyboardHandler() { //отрабатываем нажатие на клавиатуру
         document.addEventListener('keydown', (event) => {
             //нельзя выбрать противооложное направление
-            if (event.key === 'arrowLeft' && this.currentDirection !== 'right') {
+            if (event.key === 'ArrowLeft' && this.currentDirection !== 'right') {
                 this.currentDirection = 'left';
-            } else if (event.key === 'arrowRight' && this.currentDirection !== 'left') {
+            } else if (event.key === 'ArrowRight' && this.currentDirection !== 'left') {
                 this.currentDirection = 'right';
-            } else if (event.key === 'arrowUp' && this.currentDirection !== 'down') {
+            } else if (event.key === 'ArrowUp' && this.currentDirection !== 'down') {
                 this.currentDirection = 'up';
-            } else if (event.key === 'arrowDown' && this.currentDirection !== 'up') {
+            } else if (event.key === 'ArrowDown' && this.currentDirection !== 'up') {
                 this.currentDirection = 'down';
             }
         })
     }
 
-    showSnake() {
+    showSnake(foodPosition) {
+        let result = {
+            gotFood: false,
+            collision: false
+        };
         for (let i = 0; i < this.snake.length; i++) {
             this.context.fillStyle = 'black';
             this.context.beginPath();
@@ -49,7 +53,13 @@ export class Snake {
             y: this.snake[0].y
         }
 
-        this.snake.pop(); //удалим последний элемент из массива змейки (хвост)
+        if(foodPosition && foodPosition.x === newHeadPosition.x && foodPosition.y === newHeadPosition.y) {
+            //если координаты головы змеи совпадают с координатами еды
+            result.gotFood = true;
+        } else {
+            this.snake.pop(); //удалим последний элемент из массива змейки (хвост)
+        }
+
 
         if (this.currentDirection === 'left') {
             if (newHeadPosition.x === 1) {
@@ -76,7 +86,20 @@ export class Snake {
                 newHeadPosition.y += 1;
             }
         }
+        if (!this.checkNewPositionForCollision(newHeadPosition)) { //проверим не попала ли координаты головы в массив тела
+            this.snake.unshift(newHeadPosition) //добавляем элемент в начала массива
+        } else {
+            result.collision = true;
+        }
+        return result;
+    }
 
-        this.snake.unshift(newHeadPosition) //добавляем элемент в начала массива
+    checkNewPositionForCollision(newHeadPosition) {
+        for (let i = 0; i <this.snake.length; i++) {
+            if (newHeadPosition.x === this.snake[i].x && newHeadPosition.y === this.snake[i].y) {
+                return true;
+            }
+        }
+        return false;
     }
 }
