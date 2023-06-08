@@ -97,6 +97,11 @@ export class Snake {
     checkNewPositionForCollision(newHeadPosition) {
         for (let i = 0; i <this.snake.length; i++) {
             if (newHeadPosition.x === this.snake[i].x && newHeadPosition.y === this.snake[i].y) {
+                this.context.fillStyle = 'red'; //при столкновении голову отрисовали красным
+                this.context.beginPath();
+                this.context.fillRect(this.snake[i].x * this.positionsSize - this.positionsSize,
+                    this.snake[i].y * this.positionsSize - this.positionsSize,
+                    this.positionsSize, this.positionsSize);
                 return true;
             }
         }

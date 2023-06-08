@@ -21,6 +21,12 @@ export class Game {
         document.getElementById('start').onclick = () => {
             this.startGame();
         }
+        document.getElementById('grid').onclick = () => {
+            // если сетка есть, то убрать ее, если сетки нет, то включить
+        }
+        document.getElementById('border').onclick = () => {
+            // если граница есть, то убрать ее, если границы нет, то добавить
+        }
     }
 
     startGame() {
