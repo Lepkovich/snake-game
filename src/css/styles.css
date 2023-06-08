@@ -32,6 +32,10 @@ button {
     color: white;
     border: 0;
     margin-bottom: 10px;
+    cursor: pointer;
+}
+.options {
+    background-color: grey;
 }
 
 td {
@@ -53,4 +57,14 @@ th {
     overflow: hidden;
     padding: 10px 5px;
     word-break: normal;
+}
+
+canvas {
+    border: 10px solid black;
+
+}
+.canvas-no-border {
+    border: 0;
+    margin-left: 10px;
+    margin-top: 10px;
 }

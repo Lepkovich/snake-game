@@ -4,7 +4,10 @@ import {Food} from "./food.js";
 export class Game {
     // для удобства, чтобы не искать в конструкторе наши глобальные поля, вынесем их сюда
     snake = null;
+    size = 0;
     context = null;
+    grid = false;
+    border = false;
     positionsCount = null;
     positionsSize = null;
     scoreElement = null;
@@ -16,16 +19,21 @@ export class Game {
         this.context = context; //контекст
         this.positionsCount = settings.positionsCount; //переменную positionsCount
         this.positionsSize = settings.positionsSize; //переменную positionSize
+        this.size = this.positionsSize * this.positionsCount;
 
         this.scoreElement = document.getElementById('score');
+        this.canvas = document.getElementById('canvas');
         document.getElementById('start').onclick = () => {
             this.startGame();
         }
         document.getElementById('grid').onclick = () => {
-            // если сетка есть, то убрать ее, если сетки нет, то включить
+            this.grid = this.grid === false; //по клику меняем отображение сетки
+            this.showGrid(this.grid);
         }
         document.getElementById('border').onclick = () => {
-            // если граница есть, то убрать ее, если границы нет, то добавить
+            this.border = this.border === false; //по клику меняем отображение границы
+            this.showBorder(this.border, this.canvas);
+
         }
     }
 
@@ -43,14 +51,14 @@ export class Game {
     gameProcess() {
         //очищаем поле от координат 0,0 на ширину и высоту поля
         this.context.clearRect(0, 0, this.positionsCount * this.positionsSize, this.positionsCount * this.positionsSize);
-        // this.showGrid(); если играем без сетки
+        this.showGrid(this.grid);
         this.food.showFood();
-       let result =  this.snake.showSnake(this.food.foodPosition); //передадим змее еще и позицию еды
+        let result = this.snake.showSnake(this.food.foodPosition); //передадим змее еще и позицию еды
         if (result) {
             if (result.collision) {
                 this.endGame();
             } else if (result.gotFood) {
-                this.score +=1;
+                this.score += 1;
                 this.scoreElement.innerText = this.score;
                 this.food.setNewFoodPosition();
             }
@@ -65,23 +73,37 @@ export class Game {
         this.context.font = 'bold 48px Arial';
         this.context.textAlign = 'center';
         this.context.fillText('Вы набрали: ' + this.score + ' очков!',
-            (this.positionsCount * this.positionsSize)/2, (this.positionsCount * this.positionsSize)/2);
+            (this.positionsCount * this.positionsSize) / 2, (this.positionsCount * this.positionsSize) / 2);
         //разместили надпись с координатами по центру канваса
     }
 
-    showGrid() {
-        const size = this.positionsCount * this.positionsSize;
-        for (let x = 0; x <= size; x += this.positionsSize) {
+    showGrid(grid) {
+        this.context.lineWidth = 1;
+        for (let x = 0; x <= this.size; x += this.positionsSize) {
             this.context.moveTo(0.5 + x + this.positionsSize, 0);
-            this.context.lineTo(0.5 + x + this.positionsSize, size + this.positionsSize);
+            this.context.lineTo(0.5 + x + this.positionsSize, this.size + this.positionsSize);
         }
 
-        for (let x = 0; x <= size; x += this.positionsSize) {
+        for (let x = 0; x <= this.size; x += this.positionsSize) {
             this.context.moveTo(0, 0.5 + x + this.positionsSize);
-            this.context.lineTo(size + this.positionsSize, 0.5 + x + this.positionsSize);
+            this.context.lineTo(this.size + this.positionsSize, 0.5 + x + this.positionsSize);
         }
-        this.context.strokeStyle = "black";
+        if (grid) {
+            this.context.strokeStyle = "black";
+        } else {
+            this.context.strokeStyle = "green";
+        }
         this.context.stroke();
     }
 
+    showBorder(border, canvas) {
+        if (border) {
+            console.log('убираем границу');
+            canvas.classList.remove('canvas-no-border');
+        } else {
+            canvas.setAttribute('class', 'canvas-no-border')
+
+        }
+
+    }
 }
