@@ -53,7 +53,7 @@ export class Game {
         this.context.clearRect(0, 0, this.positionsCount * this.positionsSize, this.positionsCount * this.positionsSize);
         this.showGrid(this.grid);
         this.food.showFood();
-        let result = this.snake.showSnake(this.food.foodPosition); //передадим змее еще и позицию еды
+        let result = this.snake.showSnake(this.food.foodPosition, this.border); //передадим змее еще и позицию еды
         if (result) {
             if (result.collision) {
                 this.endGame();

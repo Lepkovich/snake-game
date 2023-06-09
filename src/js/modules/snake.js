@@ -34,7 +34,7 @@ export class Snake {
         })
     }
 
-    showSnake(foodPosition) {
+    showSnake(foodPosition, border) {
         let result = {
             gotFood: false,
             collision: false
@@ -49,7 +49,7 @@ export class Snake {
         }
 
         let newHeadPosition = {
-            x: this.snake[0].x,
+            x: this.snake[0].x, // при обработке стокновения со стенкой здесь возникает ошибка
             y: this.snake[0].y
         }
 
@@ -61,25 +61,39 @@ export class Snake {
         }
 
 
-        if (this.currentDirection === 'left') {
-            if (newHeadPosition.x === 1) {
-                newHeadPosition.x = this.positionsCount
+        if (this.currentDirection === 'left') { //при движении влево
+            if (border && newHeadPosition.x === 1) { //мы достигли левого края и есть граница
+                    newHeadPosition.x = 1;
+                    return  result.collision = true;//возвращаем столкновение
+            }
+            if (newHeadPosition.x === 1) { //мы достигли левого края
+                newHeadPosition.x = this.positionsCount // перемещаем голову в правый край
             } else {
-                newHeadPosition.x -= 1;
+                newHeadPosition.x -= 1; // или просто делаем шаг влево
             }
         } else if (this.currentDirection === 'right') {
+            if (border && newHeadPosition.x === this.positionsCount) { //мы достигли правого края и есть граница
+                newHeadPosition.x = this.positionsCount;
+                return  result.collision = true;//возвращаем столкновение
+            }
             if (newHeadPosition.x === this.positionsCount) {
                 newHeadPosition.x = 1
             } else {
                 newHeadPosition.x += 1;
             }
         } else if (this.currentDirection === 'up') {
+            if (border && newHeadPosition.y === 1) {
+                return  result.collision = true;
+            }
             if (newHeadPosition.y === 1) {
                 newHeadPosition.y = this.positionsCount;
             } else {
                 newHeadPosition.y -= 1;
             }
         } else if (this.currentDirection === 'down') {
+            if (border && newHeadPosition.y === this.positionsCount) {
+                return  result.collision = true;
+            }
             if (newHeadPosition.y === this.positionsCount) {
                 newHeadPosition.y = 1;
             } else {
