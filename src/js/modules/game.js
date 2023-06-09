@@ -98,11 +98,9 @@ export class Game {
 
     showBorder(border, canvas) {
         if (border) {
-            console.log('убираем границу');
             canvas.classList.remove('canvas-no-border');
         } else {
             canvas.setAttribute('class', 'canvas-no-border')
-
         }
 
     }

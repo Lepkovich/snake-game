@@ -49,7 +49,7 @@ export class Snake {
         }
 
         let newHeadPosition = {
-            x: this.snake[0].x, // при обработке стокновения со стенкой здесь возникает ошибка
+            x: this.snake[0].x,
             y: this.snake[0].y
         }
 
@@ -64,7 +64,8 @@ export class Snake {
         if (this.currentDirection === 'left') { //при движении влево
             if (border && newHeadPosition.x === 1) { //мы достигли левого края и есть граница
                     newHeadPosition.x = 1;
-                    return  result.collision = true;//возвращаем столкновение
+                    result.collision = true;//возвращаем столкновение
+                return result;
             }
             if (newHeadPosition.x === 1) { //мы достигли левого края
                 newHeadPosition.x = this.positionsCount // перемещаем голову в правый край
@@ -73,8 +74,8 @@ export class Snake {
             }
         } else if (this.currentDirection === 'right') {
             if (border && newHeadPosition.x === this.positionsCount) { //мы достигли правого края и есть граница
-                newHeadPosition.x = this.positionsCount;
-                return  result.collision = true;//возвращаем столкновение
+                result.collision = true;//возвращаем столкновение
+                return result;
             }
             if (newHeadPosition.x === this.positionsCount) {
                 newHeadPosition.x = 1
@@ -83,7 +84,8 @@ export class Snake {
             }
         } else if (this.currentDirection === 'up') {
             if (border && newHeadPosition.y === 1) {
-                return  result.collision = true;
+                result.collision = true;
+                return result;
             }
             if (newHeadPosition.y === 1) {
                 newHeadPosition.y = this.positionsCount;
@@ -92,7 +94,8 @@ export class Snake {
             }
         } else if (this.currentDirection === 'down') {
             if (border && newHeadPosition.y === this.positionsCount) {
-                return  result.collision = true;
+                result.collision = true;
+                return result;
             }
             if (newHeadPosition.y === this.positionsCount) {
                 newHeadPosition.y = 1;
