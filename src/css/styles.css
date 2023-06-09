@@ -1,9 +1,6 @@
 body {
     font-family: Arial, sans-serif;
 }
-canvas {
-    background: green;
-}
 
 .container {
     display: flex;
@@ -38,29 +35,10 @@ button {
     background-color: grey;
 }
 
-td {
-    border-color: black;
-    border-style: solid;
-    border-width: 1px;
-    font-size: 14px;
-    overflow: hidden;
-    padding: 10px 5px;
-    word-break: normal;
-}
-
-th {
-    border-color: black;
-    border-style: solid;
-    border-width: 1px;
-    font-size: 14px;
-    font-weight: normal;
-    overflow: hidden;
-    padding: 10px 5px;
-    word-break: normal;
-}
 
 canvas {
     border: 10px solid black;
+    background: green;
 
 }
 .canvas-no-border {
